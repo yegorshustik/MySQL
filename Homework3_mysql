@@ -5,10 +5,6 @@ INNER JOIN city
 ON people.city_id=city.id
 WHERE city.title='London';
 
-SELECT people.first_name, people.last_name, people.gender, city.title
-FROM people, city
-WHERE city.title='London';
-
 -- 2. Напишите запрос, который выведет названия городов в которых проживает меньше людей чем в Риме(Rome).
 SELECT city.title
 FROM city
@@ -67,8 +63,13 @@ WHERE title LIKE '%d%';
 
 -- 12. Напишите запрос, который выведет названия городов, без дубликатов, в которых проживают люди в возрасте от 50 до 80 лет.
 SELECT DISTINCT city.title
-FROM city, people
-WHERE people.age BETWEEN 50 AND 80;
+FROM city
+INNER JOIN people 
+ON people.city_id=city.id
+WHERE city.population IS NOT NULL AND people.age  BETWEEN 50 AND 80;
+
+SELECT *
+FROM city;
 
 -- 13. Напишите запрос, который выведет названия городов из таблицы City отсортированных в алфавитном порядке.--
 SELECT city.title
