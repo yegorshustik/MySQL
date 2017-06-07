@@ -1,0 +1,76 @@
+-- 1. Напишите запрос, который выведет имя, фамилию, и пол людей, которые проживают в Лондоне(London).
+SELECT first_name, last_name, gender, city.title
+FROM people
+INNER JOIN city
+ON people.city_id=city.id
+WHERE city.title='London';
+
+SELECT people.first_name, people.last_name, people.gender, city.title
+FROM people, city
+WHERE city.title='London';
+
+-- 2. Напишите запрос, который выведет названия городов в которых проживает меньше людей чем в Риме(Rome).
+SELECT city.title
+FROM city
+WHERE population<(SELECT population FROM city WHERE title='Rome');
+
+-- 3. Напишите запрос, который выведет имя, фамилию, и возраст людей в возрасте от 30 до 40 лет.
+SELECT people.first_name, people.last_name, people.age
+FROM people
+WHERE age BETWEEN 30 AND 40;
+
+-- 4. Напишите запрос, который выведет имя, возраст, и город проживания людей, которые живут либо в Лондоне(London), либо в Берлине(Berlin), в возрасте от 18 до 45 лет. Назвать столбец first_name, как имя, age, как возраст.
+SELECT first_name, gender, city.title
+FROM people
+INNER JOIN city
+ON people.city_id=city.id
+WHERE (city.title='London') OR (city.title='Berlin');
+
+-- 5. Напишите запрос, который выведет всю информцию о людях, у которых имя не заканчивается на 'n' и имеют вес меньше 80 кг.
+SELECT *
+FROM people
+WHERE (first_name NOT LIKE '%n') AND (weight<80);
+
+-- 6. Напишите запрос, который выведет фамилию и имя людей, которые проживают в городах с населением больше 3 миллионов человек.
+SELECT DISTINCT first_name, last_name
+FROM people
+INNER JOIN city
+ON people.city_id=city.id
+WHERE city.population>3;
+
+-- 7. Напишите запрос, который выведет всю информацию о людях, которые имеют возраст больше 50 лет или вес меньше 70 кг.
+SELECT *
+FROM people
+WHERE age>50 OR weight<70;
+
+-- 8. Напишите запрос, который выполнит RIGHT OUTER JOIN для таблиц City и People.
+SELECT people.first_name, people.last_name, city.title, city.population
+FROM city
+RIGHT OUTER JOIN people
+ON city.id=people.city_id;
+
+-- 9. Напишите запрос, который выполнит LEFT OUTER JOIN для таблиц City и People.
+SELECT people.first_name, people.last_name, city.title, city.population
+FROM people
+LEFT OUTER JOIN city
+ON people.city_id=city.id;
+
+-- 10. Напишите запрос, который выведет всю информацию о людях, отсортированную в восходящем порядке по возрасту, людей с одинаковым возрастом, отсортировать по весу.
+SELECT *
+FROM people
+ORDER BY age, weight ASC;
+
+-- 11. Напишите запрос, который выведет всю информацию о городах в названии которых есть символ 'd'.
+SELECT *
+FROM city
+WHERE title LIKE '%d%';
+
+-- 12. Напишите запрос, который выведет названия городов, без дубликатов, в которых проживают люди в возрасте от 50 до 80 лет.
+SELECT DISTINCT city.title
+FROM city, people
+WHERE people.age BETWEEN 50 AND 80;
+
+-- 13. Напишите запрос, который выведет названия городов из таблицы City отсортированных в алфавитном порядке.--
+SELECT city.title
+FROM city
+ORDER BY title ASC;
