@@ -1,0 +1,171 @@
+ -- 1. Какой тип связи между таблицами clients и orders?
+ -- Связь по внешнему ключу через client_id
+
+
+-- 2. По какому столбцу связаны обе таблицы?
+-- Связь по client_id
+
+
+-- 3. Напишите запрос, который выведет всех клиентов в алфавитном порядке.
+SELECT *
+FROM skills_up.clients
+ORDER BY first_name  ASC;
+
+
+-- 4. Напишите запрос, который выведет названия и цену заказов для заказов с ценой выше 12000.
+SELECT title, price
+FROM orders
+WHERE price>12000;
+
+
+-- 5. Напишите запрос, который выведет максимальную цену заказа по каждому клиенту.
+SELECT MAX(price), client_id
+FROM orders
+GROUP BY client_id;
+
+
+-- 6. Напишите запрос, который выведет имя клиента(-ов), с максимальной ценой заказа больше 30000.
+SELECT clients.first_name, orders.price
+FROM clients
+INNER JOIN orders
+ON orders.client_id=clients.id
+WHERE orders.price>30000;
+
+
+-- 7. Напишите запрос, который выведет имя и фамилию клиентов, без дубликатов, у которых есть заказы.
+SELECT DISTINCT first_name, last_name
+FROM clients
+INNER JOIN orders
+ON clients.id=orders.client_id
+WHERE client_id IS NOT NULL;
+
+
+-- 8. Напишите запрос, который выведет обьединение из имени и фамилии клиентов.
+SELECT CONCAT (first_name, ' ', last_name) AS 'Имя и фамилия' 
+FROM clients;
+
+
+-- 9. Напишите запрос, который выведет имя и email клиента(-ов) с максимальным возрастом.
+SELECT first_name, email, MAX(age)
+FROM clients
+GROUP BY id
+ORDER BY age DESC;
+
+
+-- 10. Напишите запрос, который выведет информацию о женщине с максимальным возрастом и мужчине с минимальным возрастом. Вывести имя, фамилию, пол и возраст.
+SELECT DISTINCT first_name, last_name, age, gender
+FROM clients
+WHERE age IN (SELECT MIN(age)
+FROM clients
+WHERE gender='Male' ) AND gender='Male'
+UNION
+SELECT DISTINCT first_name, last_name, age, gender
+FROM clients
+WHERE age IN (SELECT MAX(age)
+FROM clients
+WHERE gender='Female' ) AND gender='Female'
+
+
+-- 11. Напишите запрос, который выведет названия заказов, которые были сделаны женщинами.
+SELECT title
+FROM orders
+INNER JOIN clients
+ON orders.client_id=clients.id
+WHERE clients.gender='Female';
+
+
+-- 12. Напишите запрос, который выведет информацию о заказах, совершеными Henri McAllister.
+SELECT *
+FROM orders
+INNER JOIN clients
+ON orders.client_id=clients.id
+WHERE clients.first_name='Henri' AND clients.last_name='McAllister';
+
+
+-- 13. Напишите запрос, который выведет количество заказов у каждого клиента. Вывести имя клиента, и количество заказов.
+SELECT clients.first_name, COUNT(orders.id)
+FROM clients
+INNER JOIN orders
+ON orders.client_id=clients.id
+WHERE orders.price IS NOT NULL
+GROUP BY clients.first_name;
+
+
+-- 14. Напишите запрос, который выведет количество заказов у каждого клиента, в возрасте от 40 до 60 лет, и количестве товара в заказе от 20 до 40 штук.
+SELECT COUNT(orders.id)
+FROM orders
+INNER JOIN clients
+ON orders.client_id=clients.id
+WHERE (clients.age BETWEEN 40 AND 60) AND (orders.amount BETWEEN 20 AND 40);
+
+
+-- 15. Напишите запрос, который имя, фамилию и возраст клиентов, у которых нет заказов. Назвать столбцы 'Имя', 'Фамилия', 'Возраст'
+SELECT DISTINCT first_name AS 'Имя', last_name AS 'Фамилия ', age AS 'Возраст'
+FROM clients
+LEFT OUTER JOIN orders
+ON orders.client_id=clients.id
+WHERE client_id IS NULL;
+
+
+-- 16. Напишите запрос, который выведет средний возраст клиентов, у которых есть заказы.
+SELECT AVG(age) AS 'Средний возраст клиента'
+FROM clients
+LEFT OUTER JOIN orders
+ON orders.client_id=clients.id
+WHERE client_id IS NOT NULL;
+
+
+-- 17. Напишите запрос, который выведет фамилию клиента, и количество заказов у клента. Назвать столбцы 'Имя', и 'Общее количество заказов'.
+SELECT last_name AS 'Имя', COUNT(orders.id) AS 'Общее количество заказов'
+FROM clients
+LEFT OUTER JOIN orders
+ON orders.client_id=clients.id
+GROUP BY last_name
+ORDER BY COUNT(orders.id) DESC;
+
+
+-- 18. Напишите запрос, который выведет первые 10 записей о заказах.
+SELECT *
+FROM orders
+WHERE id BETWEEN 1 AND 10;
+
+
+-- 19. (!) Напишите запрос, который выведет имя и возраст клиента, у которого есть хотя бы 1 заказ.
+SELECT first_name, age 
+FROM clients
+LEFT OUTER JOIN orders
+ON orders.client_id=clients.id
+WHERE COUNT(id) IN 
+
+SELECT client_id, COUNT(id) 
+FROM orders
+GROUP BY client_id
+HAVING COUNT(id)=1;
+
+
+-- 20. (!) Напишите запрос, который выведет имя и возраст клиента, у которого максимальная цена заказа превышает 15000.
+
+-- 21. Напишите запрос, который выведет названия заказов, которые имеют цену от 20000 до 40000 и количество меньше 30 штук.
+SELECT title
+FROM orders
+WHERE (price BETWEEN 20000 AND 40000) AND amount<30;
+
+
+--  22. Напишите запрос, который выведет названия заказов, у которых в имени клиента больше 5 символов.
+SELECT title
+FROM orders
+INNER JOIN clients
+ON orders.client_id=clients.id
+WHERE LENGTH(first_name)>5;
+
+
+-- 23. Напишите запрос, который выведет записи с 12 по 14 из таблицы заказов.
+SELECT *
+FROM orders
+WHERE id BETWEEN 12 AND 14;
+  
+  
+-- 24. Напишите запрос, который выведет количество женщин и мужчин среди клиентов. Отобразить пол и количество человек.
+SELECT gender, COUNT(id)
+FROM clients
+GROUP BY gender;
