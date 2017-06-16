@@ -130,20 +130,22 @@ FROM orders
 WHERE id BETWEEN 1 AND 10;
 
 
--- 19. (!) Напишите запрос, который выведет имя и возраст клиента, у которого есть хотя бы 1 заказ.
-SELECT first_name, age 
+-- 19. Напишите запрос, который выведет имя и возраст клиента, у которого есть хотя бы 1 заказ.
+SELECT DISTINCT first_name, age 
 FROM clients
-LEFT OUTER JOIN orders
+INNER JOIN orders
 ON orders.client_id=clients.id
-WHERE COUNT(id) IN 
-
-SELECT client_id, COUNT(id) 
-FROM orders
-GROUP BY client_id
-HAVING COUNT(id)=1;
+WHERE client_id IS NOT NULL;
 
 
--- 20. (!) Напишите запрос, который выведет имя и возраст клиента, у которого максимальная цена заказа превышает 15000.
+-- 20. Напишите запрос, который выведет имя и возраст клиента, у которого максимальная цена заказа превышает 15000.
+SELECT first_name, age
+FROM clients
+INNER JOIN orders
+ON orders.client_id=clients.id
+WHERE price=
+(SELECT MAX(price)
+FROM orders);
 
 -- 21. Напишите запрос, который выведет названия заказов, которые имеют цену от 20000 до 40000 и количество меньше 30 штук.
 SELECT title
