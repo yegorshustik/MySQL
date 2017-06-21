@@ -36,8 +36,7 @@ WHERE orders.price>30000;
 SELECT DISTINCT first_name, last_name
 FROM clients
 INNER JOIN orders
-ON clients.id=orders.client_id
-WHERE client_id IS NOT NULL;
+ON clients.id=orders.client_id;
 
 
 -- 8. Напишите запрос, который выведет обьединение из имени и фамилии клиентов.
@@ -108,7 +107,8 @@ GROUP BY clients.first_name;
 SELECT DISTINCT first_name AS 'Имя', last_name AS 'Фамилия ', age AS 'Возраст'
 FROM clients
 LEFT OUTER JOIN orders
-ON orders.client_id=clients.id;
+ON orders.client_id=clients.id
+WHERE client_id IS NOT NULL;
 
 
 -- 16. Напишите запрос, который выведет средний возраст клиентов, у которых есть заказы.
