@@ -108,17 +108,14 @@ GROUP BY clients.first_name;
 SELECT DISTINCT first_name AS 'Имя', last_name AS 'Фамилия ', age AS 'Возраст'
 FROM clients
 LEFT OUTER JOIN orders
-ON orders.client_id=clients.id
-WHERE client_id IS NULL;
+ON orders.client_id=clients.id;
 
 
 -- 16. Напишите запрос, который выведет средний возраст клиентов, у которых есть заказы.
-SELECT DISTINCT AVG(age) AS 'Средний Возраст'
+SELECT AVG(age) AS 'Средний Возраст'
 FROM clients
 INNER JOIN orders
-ON orders.client_id=clients.id
-GROUP BY clients.id
-HAVING COUNT(orders.id) IS NOT NULL;
+ON orders.client_id=clients.id;
 
 
 -- 17. Напишите запрос, который выведет фамилию клиента, и количество заказов у клента. Назвать столбцы 'Имя', и 'Общее количество заказов'.
@@ -146,7 +143,7 @@ FROM clients
 INNER JOIN orders
 ON orders.client_id=clients.id
 GROUP BY clients.id
-HAVING COUNT(orders.id)=1;
+HAVING COUNT(orders.id)>=1;
 
 
 -- 20. Напишите запрос, который выведет имя и возраст клиента, у которого максимальная цена заказа превышает 15000.
@@ -175,7 +172,7 @@ WHERE LENGTH(first_name)>5;
 -- 23. Напишите запрос, который выведет записи с 12 по 14 из таблицы заказов.
 SELECT *
 FROM orders
-LIMIT 11, 13;
+LIMIT 11, 3;
   
   
 -- 24. Напишите запрос, который выведет количество женщин и мужчин среди клиентов. Отобразить пол и количество человек.
